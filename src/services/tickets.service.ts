@@ -1,7 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository} from 'typeorm';
+import { User } from 'src/entities/users.entity';
+
 
 @Injectable()
-export class ClientsService {
+export class ticketsService {
+    constructor(
+        @InjectRepository(User)
+        private clientsRepository:Repository<User>,
+    ){}
 
     //個人頁面 Personal_info
     getPersonal_info(): string {
