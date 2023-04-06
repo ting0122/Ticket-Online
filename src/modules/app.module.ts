@@ -4,13 +4,15 @@ import databaseConfig from 'config/database.config';
 import serverConfig from 'config/server.config';
 import { AppController } from '../controllers/app.controller';
 import { AppService } from '../services/app.service';
-import { ClientsModule } from './tickets.module';
+import { TicketsModule } from './tickets.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entities/users.entity';
+import { UsersModule } from './users.module';
+import { Ticket } from 'src/entities/tickets.entity';
 
 @Module({
   imports: [
-    ClientsModule,
+    TicketsModule,
     ConfigModule.forRoot({
       envFilePath:'development.env',
       load:[databaseConfig, serverConfig],
@@ -19,12 +21,13 @@ import { User } from 'src/entities/users.entity';
       type:'postgres',
       host:'localhost',
       port:5432,
-      username:'root',
+      username:'postgres',
       password:'root',
       database:'test',
-      entities:[User],
+      entities:[User, Ticket],
       synchronize:true,
-    })
+    }),
+    UsersModule
   ],
   controllers: [AppController],
   providers: [ConfigService],
