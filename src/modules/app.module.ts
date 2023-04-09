@@ -17,15 +17,19 @@ import { Ticket } from 'src/entities/tickets.entity';
       envFilePath:'development.env',
       load:[databaseConfig, serverConfig],
     }),
-    TypeOrmModule.forRoot({
-      type:'postgres',
-      host:'localhost',
-      port:5432,
-      username:'postgres',
-      password:'root',
-      database:'test',
-      entities:[User, Ticket],
-      synchronize:true,
+    TypeOrmModule.forRootAsync({
+      imports:[ConfigModule],
+      useFactory:(configService:ConfigService)=>({
+        type:'postgres',
+        host:configService.get('DB.host'),
+        port:+configService.get('DB.port'),
+        username:configService.get('DB.username'),
+        password:configService.get('DB.password'),
+        database:configService.get('DB.database'),
+        entities:configService.get('DB.entities'),
+        synchronize:configService.get('DB.synchronize'),
+      }),
+      inject:[ConfigService],
     }),
     UsersModule
   ],
