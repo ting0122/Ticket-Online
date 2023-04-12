@@ -1,5 +1,6 @@
 import { Controller } from '@nestjs/common';
-import { Get, Post } from '@nestjs/common/decorators';
+import { Body, Get, Post } from '@nestjs/common/decorators';
+import { ProdDto } from 'src/dtos/prod.dto';
 import { ticketsService } from 'src/services/tickets.service';
 
 @Controller('ticket')
@@ -14,20 +15,20 @@ export class ticketsController {
 
     //訂票 Buy_info
     @Post()
-    postBuy_info(){
-        return this.ticketsService.postBuy_info();
+    postBuy_info(@Body() dto: ProdDto){
+        return this.ticketsService.postBuy_info(dto.id, dto.amount);
     }
 
     //取消 Cancel_info
     @Post()
-    postCancel_info(){
-        return this.ticketsService.postCancel_info();
+    postCancel_info(@Body() ProdId: number){
+        return this.ticketsService.postCancel_info(ProdId);
     }
 
     //編輯 Edit_info
     @Post()
-    postEdit_info(){
-        return this.ticketsService.postEdit_info();
+    postEdit_info(@Body() ProdId: number,I: number, D: number){
+        return this.ticketsService.postEdit_info(ProdId,I,D);
     }
 
     //付款 Pay_info

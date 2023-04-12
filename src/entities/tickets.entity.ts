@@ -7,7 +7,7 @@ export class Ticket {
     id:number;
 
     @Column()
-    production: string;
+    production_ID: number;
 
     @Column()
     amount: number;

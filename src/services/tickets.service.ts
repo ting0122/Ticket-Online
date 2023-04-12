@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository} from 'typeorm';
 import { Ticket } from 'src/entities/tickets.entity';
+import { ProdDto } from 'src/dtos/prod.dto';
 
 @Injectable()
 export class ticketsService {
@@ -11,23 +12,23 @@ export class ticketsService {
     ){}
 
     //個人頁面 Personal_info
-    getPersonal_info(): string {
-        return 'Personal_info';
+    getPersonal_info(): Promise<Ticket[]> {
+        return this.ticketsRepository.find();
     }
 
     //訂票 Buy_info
-    postBuy_info(): string {
-        return 'Buy_info';
+     async postBuy_info(prodId:number, Q:number){
+         await this.ticketsRepository.update(prodId,{amount: Q});
     }
 
     //取消 Cancel_info
-    postCancel_info(): string {
-        return 'Cancel_info';
+    async postCancel_info(id:number){
+        await this.ticketsRepository.delete(id);
     }
 
     //編輯 Edit_info
-    postEdit_info(): string {
-        return 'Edit_info';
+    async postEdit_info(id:number,I:number,D:number){
+        await this.ticketsRepository.update(id,{amount:+I-D});
     }
 
     //付款 Pay_info
