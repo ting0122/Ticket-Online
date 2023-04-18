@@ -4,6 +4,7 @@ import { Repository} from 'typeorm';
 import { User } from 'src/entities/users.entity';
 import { CreateUserDto } from 'src/dtos/create-user.dto';
 import { SignInDto } from 'src/dtos/signin.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -17,6 +18,8 @@ export class UsersService {
     }
 
     async postSignup_info(dto: CreateUserDto){
+        const encry_pwd = await bcrypt.hash(dto.password,12);
+        dto = {...dto, password:encry_pwd};
         await this.usersRepository.create(dto);
     }
 
