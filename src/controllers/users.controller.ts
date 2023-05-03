@@ -14,15 +14,9 @@ export class UsersController {
     }
 
     //註冊
-    @Post()
+    @Post('signup')
     async postSignup_info(@Body() body:CreateUserDto){
         await this.usersService.postSignup_info(body);
-    }
-
-    //登入
-    @Post()
-    async postSignin_info(@Body() body:SignInDto){
-        await this.usersService.postSignin_info(body);
     }
 
 }

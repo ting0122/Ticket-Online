@@ -29,17 +29,8 @@ export class UsersService {
         await this.usersRepository.create(dto);
     }
 
-    async postSignin_info(dto: SignInDto){
-        const {name, password} = dto;
-        const user = await this.usersRepository.findOneBy({name:name});
-        if(!user){
-            throw new Error('Invalid Information');
-        }
-        const isPasswordValid = await bcrypt.compare(password,user.password);
-        if(!isPasswordValid){
-            throw new Error('Invalid Information');
-        }
-        return user;
+    findUser(username:string){
+        return this.usersRepository.findOneBy({name:username});
     }
 
     private async isExistUser(username:string):Promise<boolean>{
