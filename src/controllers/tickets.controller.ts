@@ -1,5 +1,6 @@
 import { Controller } from '@nestjs/common';
-import { Body, Get, Post } from '@nestjs/common/decorators';
+import { Body, Get, Post, UseGuards } from '@nestjs/common/decorators';
+import { AuthGuard } from '@nestjs/passport';
 import { ProdDto } from 'src/dtos/prod.dto';
 import { ticketsService } from 'src/services/tickets.service';
 
@@ -8,6 +9,7 @@ export class ticketsController {
     constructor(private readonly ticketsService: ticketsService){}
 
     //個人頁面 Personal_info
+    @UseGuards(AuthGuard('jwt'))
     @Get()
     getPersonal_info(){
         return this.ticketsService.getPersonal_info();

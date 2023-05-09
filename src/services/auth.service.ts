@@ -3,6 +3,8 @@ import { UsersService } from './users.service';
 import * as bcrypt from 'bcrypt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
+import { ConfigService } from '@nestjs/config';
+import { ExtractJwt } from 'passport-jwt';
 
 interface IUserPayload {
     id: number;
@@ -58,5 +60,26 @@ export class LocalStrategy extends PassportStrategy(Strategy){
         };
 
         return payload;
+    }
+}
+
+@Injectable()
+export class JwtStrategy extends PassportStrategy(Strategy) {
+    constructor(configService: ConfigService) {
+        super({
+            jwtFromRequest: ExtractJwt
+                .fromAuthHeaderAsBearerToken(),
+            ignoreExpiration: false,
+            secretOrKey: configService.get('secret.jwt'),
+        });
+    }
+
+    validate(payload : Record<string, any>) {
+        const { id, username} = payload;
+        const userPayload: IUserPayload = {
+            id,
+            username,
+        };
+        return userPayload;
     }
 }
